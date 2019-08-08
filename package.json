@@ -1,0 +1,25 @@
+{
+  "name": "sigsel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "Ricardo Liang (ricardoliang@gmail.com)",
+  "bugs": {
+    "url": "https://github.com/rliang/sigsel.js/issues"
+  },
+  "description": "Selectable signals",
+  "homepage": "https://github.com/rliang/sigsel.js#readme",
+  "keywords": [
+    "event",
+    "signal",
+    "observable",
+    "async",
+    "await",
+    "promise"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rliang/sigsel.js.git"
+  }
+}
