@@ -1,6 +1,6 @@
 {
   "name": "sigsel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "types": "index.d.ts",
   "author": "Ricardo Liang (ricardoliang@gmail.com)",
@@ -10,7 +10,8 @@
   "description": "Selectable signals",
   "homepage": "https://github.com/rliang/sigsel.js#readme",
   "keywords": [
-    "event",
+    "go",
+    "csp",
     "signal",
     "observable",
     "async",
