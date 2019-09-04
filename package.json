@@ -1,6 +1,6 @@
 {
   "name": "sigsel",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "author": "Ricardo Liang (ricardoliang@gmail.com)",
@@ -22,5 +22,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rliang/sigsel.js.git"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

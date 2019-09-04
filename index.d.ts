@@ -1,32 +1,17 @@
 /**
- * An unbuffered signal.
+ * A signal is a function
+ * which resolves all select calls waiting on it.
  */
-export interface Signal<T> {
-  /**
-   * The signal's current value.
-   */
-  readonly value: T;
-  /**
-   * Updates the signal's value.
-   *
-   * @param v the new signal's value.
-   */
-  put(v: T): void;
+export interface Signal {
+  (_?: any): void;
 }
 
 /**
  * Creates a signal.
- *
- * @param v the signal's initial value.
  */
-export function signal<T = null>(v: T): Signal<T>;
+export function signal(): Signal;
 
 /**
- * Waits for a given set of signals to update.
- *
- * @param sigs the signals to await.
- * @return p promise that resolves to the first updated signal.
+ * Waits for the first called signal.
  */
-export function select<S extends Signal<unknown>[]>(
-  ...sigs: S
-): Promise<S[number]>;
+export function select(...sigs: Signal[]): Promise<Signal>;

@@ -6,7 +6,13 @@
 Selectable signals.
 
 Inspired by Go's channels and Clojure's `core.async`,
-with a minimal footprint.
+this library aims to make concurrent programming easier.
+
+Since JS is single-threaded,
+there can be no data races across synchronous calls.
+This means we do not need channels and can just share variables.
+However, we still want a mechanism for synchronizing asynchronous operations.
+For that purpose, we use a `signal` object.
 
 ## Installation
 
@@ -22,57 +28,21 @@ npm i sigsel
 import { signal, select } from "sigsel";
 
 (async () => {
-  // use signal() to create a signal with an initial value.
-  // signals are unbuffered and only hold one value.
-  const counter = signal(0);
-  const timeouts = signal(null);
-
+  let counter = 0;
+  const click = signal();
+  const timeout = signal();
   for (;;) {
-    // use .put() to update the signal's value.
-    // all consumers select()'ing a signal will be notified.
-    const timer = setTimeout(() => timeouts.put(null), 1000);
-
-    render(
-      // use .value to access the value within the signal.
-      <button onclick={() => counter.put(counter.value + 1)}>
-        {counter.value}
-      </button>
-    );
-
-    // use select() to await the first updated signal.
-    switch (await select(counter, timeouts)) {
-      case counter:
-        clearTimeout(timer);
+    const timer = setTimeout(timeout, 1000);
+    render(<button onclick={click}>{counter}</button>);
+    switch (await select(click, timeout)) {
+      case click:
+        counter++;
         break;
-      case timeouts:
-        counter.put(counter.value - 1);
+      case timeout:
+        counter--;
         break;
     }
+    clearTimeout(timer);
   }
-})();
-```
-
-### Ping/pong
-
-```js
-import { signal, select } from "sigsel";
-
-async function player(name, table, close) {
-  for (;;) {
-    if ((await select(table, close)) === close) break;
-    console.log(name, 'hits:', table.value);
-    await new Promise(r => setTimeout(r, 100));
-    table.put(table.value + 1);
-  }
-}
-
-(async () => {
-  const table = signal();
-  const close = signal();
-  player('ping', table, close);
-  table.put(0);
-  player('pong', table, close);
-  await new Promise(r => setTimeout(r, 1000));
-  close.put(null);
 })();
 ```

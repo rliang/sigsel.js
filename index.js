@@ -1,25 +1,16 @@
 module.exports = {
-  signal(value) {
-    let listeners = new Set
-    return {
-      get value() {
-        return value
-      },
-      put(v) {
-        value = v
-        let tmp = Array.from(listeners)
-        listeners.clear()
-        tmp.forEach(f => f())
-      },
-      _(f) {
-        listeners.add(f)
-        return listeners.delete.bind(listeners, f)
-      }
-    }
+  signal() {
+    let notify = () => Array.from(notify._).map(f => f())
+    notify._ = new Set
+    return notify
   },
   select(...sigs) {
     return new Promise(r => {
-      let cbs = sigs.map(sig => sig._(_ => (cbs.map(cb => cb()), r(sig))))
+      let cbs = sigs.map(sig => {
+        let f = () => { cbs.map(cb => cb()); r(sig) }
+        sig._.add(f)
+        return () => sig._.delete(f)
+      })
     })
   }
 }
